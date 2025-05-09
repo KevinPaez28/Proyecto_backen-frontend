@@ -1,5 +1,4 @@
 import express from "express";
-import bodyParser from "body-parser";
 
 import ciudades_rutas from "./src/routes/ciudades_rutas.js"
 import genero_rutas from "./src/routes/genero_rutas.js"

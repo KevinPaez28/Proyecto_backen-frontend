@@ -1,53 +1,28 @@
-import Ciudades from "../models/Ciudades.js"
+import { ResponseProvider } from "../providers/ResponseProvider.js";
+import CiudadesServices from "../services/ciudadesyService.js";
 
-class CiudadesController{
+class CiudadesController {
   static getAllciudades = async (req, res) => {
-    const OBJciudades = new Ciudades();
-    const ciudades = await OBJciudades.getAll();
-    res.json(ciudades);
-  }
-  static postAllciudades = async (req, res) => {
     try {
-    const { nombre } = req.body;
-    const OBJciudades = new Ciudades();
-    const ciudades = await OBJciudades.postAll(nombre)
-    res.status(200).json(ciudades)
+      const response = await CiudadesServices.getCiudades();
+      if (response.error) {
+        return ResponseProvider.success(
+          res,
+          response.message,
+          response.code
+        )
+      } else {
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        )
+      }
     } catch (error) {
-    res.status(500).json({error: error.message})
+      ResponseProvider.error(res, "Error interno del servidor", 500)
     }
-  }
-  static patchAllciudades = async (req, res) => {
-    const {id} = req.params;
-    const ciudad  = req.body;
-    try {
-    const OBJciudades = new Ciudades();
-    const ciudades = await OBJciudades.patchAllciudades(id,ciudad)
-    res.status(200).json(ciudades)
-   } catch (error) {
-    res.status(500).json({error: error.message})
-   }
-  }
-  static putAllciudades = async (req, res) => {
-    try {
-      const {id} = req.params;
-      const { ciudad } = req.body;
-      const OBJciudades = new Ciudades();
-      const ciudades = await OBJciudades.putAllciudades(id,ciudad)
-      res.status(200).json(ciudades)
-    } catch (error) {
-      res.status(500).json({ error: error.message })
-    }
-  }
-  static DeleteCiudades = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const OBJciudades = new Ciudades();
-    const ciudades = await OBJciudades.DeleteCiudades(id)
-    res.status(200).json(ciudades)
-  } catch (error) {
-    res.status(500).json({ error: error.message })
-    }
-  }
+  };
 }
 
 export default CiudadesController;
