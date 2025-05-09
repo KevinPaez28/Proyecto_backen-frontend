@@ -1,6 +1,8 @@
 import connection from "../utils/db.js";
 
 class Usuarios {
+
+  
   async getAll() {
     try {
       const [rows] = await connection.query("SELECT * FROM usuarios")
