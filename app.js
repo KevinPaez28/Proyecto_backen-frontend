@@ -1,10 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
 
-import ciudades_rutas from "./routes/ciudades_rutas.js"
-import genero_rutas from "./routes/genero_rutas.js"
-import lenguajes_rutas from "./routes/lenguajes_rutas.js"
-import usuario_rutas from "./routes/usuario_rutas.js"
+import ciudades_rutas from "./src/routes/ciudades_rutas.js"
+import genero_rutas from "./src/routes/genero_rutas.js"
+import lenguajes_rutas from "./src/routes/lenguajes_rutas.js"
+import usuario_rutas from "./src/routes/usuario_rutas.js"
 
 
 
