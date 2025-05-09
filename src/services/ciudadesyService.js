@@ -27,7 +27,33 @@ class CiudadesServices {
     }
     }
   }
-  static 
+  static async ciudadesbyid(id) {
+    try {
+      const instanciarCiudades = new Ciudades();
+      const ciudades = await instanciarCiudades.getbyid(id);
+      if (ciudades.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Ciudad no encontrada",
+        }
+      }
+      const usuarios = await instanciarCiudades.usuarios(id);
+      ciudades.usuarios = usuarios;
+      return {
+        error: false,
+        code: 200,
+        message: "Usuario obtenido correctamente",
+        data: ciudades,
+      };
+    } catch (error) {
+     return {
+        error: true,
+        code: 500,
+        message: "Error al obtener las Ciudades" ,
+      };      
+    }
+  }
 
   
 }

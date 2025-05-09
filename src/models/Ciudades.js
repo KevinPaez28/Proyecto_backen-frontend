@@ -9,6 +9,24 @@ class Ciudades{
       throw new Error ("Error al consultar las ciudades")
     }
   }
+  
+  async getbyid(id) {
+    try {
+      const [rows] = await connection.query("SELECT * FROM ciudades WHERE id_ciudad = ?", [id]);
+      if (rows.length === 0) {
+        return []
+      }
+      return rows[0];
+    } catch (error) {
+      throw new Error("Error al obtener la Ciudades");
+    }
+  }
+  //Obtener usuarios por Id_cuidad
+  async usuarios(CiudadId) {
+    const [rows] = await connection.query("SELECT * FROM usuarios WHERE ciudad = ?",[CiudadId])
+    return rows;
+  }
+
   async postAll(nombre) {
    try {
      const [rows] = await connection.query("INSERT INTO ciudades (ciudad) values (?)", [nombre])
@@ -20,6 +38,7 @@ class Ciudades{
     throw new Error ("Error al insertar las ciudades")
    }
   }
+
   async patchAllciudades(id, ciudad) {
     try {
       for (const key in ciudad) {
