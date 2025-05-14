@@ -27,12 +27,12 @@ class Ciudades{
     return rows;
   }
 
-  async postAll(nombre) {
+  async postAll(ciudad) {
    try {
-     const [rows] = await connection.query("INSERT INTO ciudades (ciudad) values (?)", [nombre])
+     const [rows] = await connection.query("INSERT INTO ciudades (ciudad) values (?)", [ciudad])
     return {
       id: rows.id,
-      nombre: nombre
+      ciudad: ciudad
     }
    } catch (error) {
     throw new Error ("Error al insertar las ciudades")
@@ -51,16 +51,25 @@ class Ciudades{
       throw new Error ("Error al actualizar las ciudades")
     }
   }
-  async putAllciudades(id,ciudad) {
+  async putAllciudades(id, campos) {
+ 
     try {
-      const [rows] = await connection.query("UPDATE ciudades SET ciudad = ? where id_ciudad= ?", [ciudad, id])
-       if (rows.affectedRows === 0) {
-       throw new Error("Categoria no encontrada")
-      }
-      return "Ciudad modificada";
-    } catch (error) {
-      throw new Error ("Error al actualizar las ciudades")
-    }
+     let query = "UPDATE ciudades SET ";
+     let params = [];
+
+     for (const [key, value] of Object.entries(campos)) {
+       query += `${key} = ?, `;
+       params.push(value)
+     }
+     query = query.slice(0, -2);
+
+     query += " WHERE id_ciudad = ?";
+     params.push(id);
+     const [result] = await connection.query(query, params);
+     return result.affectedRows > 0 ? { id, ...campos } : null;
+   } catch (error) {
+      throw new Error("Error al actualizar la ciudad");
+   }
   }
   async DeleteCiudades(id) {
     try {
@@ -73,6 +82,8 @@ class Ciudades{
      throw new Error ("Error al eliminar las ciudades")
     }
   }
+
+  
 }
 
 export default Ciudades;
