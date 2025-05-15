@@ -39,18 +39,7 @@ class Ciudades{
    }
   }
 
-  async patchAllciudades(id, ciudad) {
-    try {
-      for (const key in ciudad) {
-      
-        const[rows] = await connection.query(`UPDATE ciudades SET ${key} = ? where id_ciudad = ?`,[ciudad[key], id])
-      }
-      const [mostrar] = await connection.query("SELECT * FROM ciudades Where id_ciudad = ?",[id]);
-      return "Ciudades modificadas";
-    } catch (error) {
-      throw new Error ("Error al actualizar las ciudades")
-    }
-  }
+
   async putAllciudades(id, campos) {
  
     try {

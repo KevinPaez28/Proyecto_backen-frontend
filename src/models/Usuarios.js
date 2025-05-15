@@ -12,9 +12,9 @@ class Usuarios {
     }
   }
   async postUsuarios(documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad) {
+    
    try {
-     const [rows] = await connection.query("INSERT INTO usuarios (documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad) VALUES (?, ?, ?, ?, ?, ?, ?)",
-  [documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad]);
+     const [rows] = await connection.query("INSERT INTO usuarios (documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad) VALUES (?, ?, ?, ?, ?, ?, ?)",[documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad]);
      return {
        id: rows.id,
        nombre_usuario: nombre_usuario,
@@ -25,30 +25,39 @@ class Usuarios {
        ciudad,ciudad
      }
    } catch (error) {
+    console.error("Error al insertar los Usuarios", error);
     throw new Error ("Error al insertar los Usuarios " )    
    }
   }
-  async patchUsuarios(id, dato_parcial) {
+  async getbyid(id) {
     try {
-      for (const key in dato_parcial) {
-        const [result] = await connection.query(`UPDATE usuarios SET ${key} = ?  where id_usuario = ?`, [dato_parcial[key], id]);
-       }
-       const [imprimir] = await connection.query("SELECT * FROM usuarios where id_usuario =?",[id])
-      return imprimir; 
+      const [rows] = await connection.query("SELECT * FROM usuarios WHERE id_usuario = ?", [id]);
+      if (rows.length === 0) {
+        return []
+      }
+      return rows[0];
     } catch (error) {
-      throw new Error("Error al actualizar la Usuarios")
+      throw new Error("Error al obtener los Usuarios");
     }
   }
-  async putUsuarios(id, documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad) {
-     try {
-      const [rows] = await connection.query("UPDATE usuarios SET documento = ?, nombre_usuario = ?, apellido_usuario = ?, telefono= ?, contrasenia= ?, genero= ?, ciudad= ?  where id_usuario= ?", [ documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad, id])
-       if (rows.affectedRows === 0) {
-       throw new Error("Categoria no encontrada")
+ async putAllciudades(id, campos){
+    try {
+      let query = "UPDATE usuarios SET ";
+      let params = [];
+ 
+      for (const [key, value] of Object.entries(campos)) {
+        query += `${key} = ?, `;
+        params.push(value)
       }
-      return "Usuario modificada";
+      query = query.slice(0, -2);
+ 
+      query += " WHERE id_usuario = ?";
+      params.push(id);
+      const [result] = await connection.query(query, params);
+      return result.affectedRows > 0 ? { id, ...campos } : null;
     } catch (error) {
-      throw new Error ("Error al actualizar las Usuario"+error)
-    }
+       throw new Error("Error al actualizar la ciudad");
+    } 
   }
   async deleteUsuarios(id) {
     try {
