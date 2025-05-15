@@ -54,6 +54,8 @@ class CiudadesServices {
       };
     }
   }
+
+  
   static async postAll(ciudad) {
     try {
       const instanciarCiudades = new Ciudades();

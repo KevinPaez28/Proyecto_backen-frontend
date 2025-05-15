@@ -1,5 +1,5 @@
 import { ResponseProvider } from "../../providers/ResponseProvider.js";
-import { campos } from "./validacionesCiudad.js";
+import { campos } from "./validacionesGenero.js";
 
 export function parcialesCiudad(req, res, next) {
   const errors = [];

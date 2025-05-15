@@ -9,6 +9,23 @@ class Generos{
      throw new Error ("Error al consultar las generos")
     }
   }
+  async getallbyId(id) {
+    try {
+      const [rows] = await connection.query("SELECT * FROM generos WHERE id_genero = ?", [id])
+       if (rows.length === 0) {
+        return []
+      }
+      return rows[0];
+    } catch (error) {
+      throw new Error("Error al obtener los generos");
+    }
+  }
+  async usuarios(genero) {
+    const [rows] = await connection.query("SELECT * FROM usuarios WHERE genero = ?",[genero])
+    return rows;
+  }
+
+
   async postAllgeneros(genero) {
     try {
       const [rows] = await connection.query("INSERT INTO generos (genero) values (?)", [genero])
@@ -20,28 +37,26 @@ class Generos{
      throw new Error ("Error al insertar las generos")
     }
   }
-  async patchAllgeneros(id,genero) {
-    try {
-      for (const key in genero) {
-        const [rows] = await connection.query(`UPDATE generos SET ${key} = ? where id_genero = ?`,[genero[key],id])
-      }
-      const [mostrar] = await connection.query("SElECT * FROM generos WHERE id_genero = ?", [id])
-      return mostrar;
-    } catch (error) {
-     throw new Error ("Error al actualizar las generos")
-    }
+  async putallGeneros(id,campos) {
+     try {
+     let query = "UPDATE generos SET ";
+     let params = [];
+
+     for (const [key, value] of Object.entries(campos)) {
+       query += `${key} = ?, `;
+       params.push(value)
+     }
+     query = query.slice(0, -2);
+
+     query += " WHERE id_genero = ?";
+     params.push(id);
+     const [result] = await connection.query(query, params);
+     return result.affectedRows > 0 ? { id, ...campos } : null;
+   } catch (error) {
+      throw new Error("Error al actualizar el genero");
+   }
   }
-  async putAllgeneros(id, genero) {
-    try {
-      const [rows] = await connection.query(`UPDATE generos SET genero = ? where id_genero = ?`,[genero,id])
-      if (rows.affectedRows === 0) {
-       throw new Error("Ciudad no encontrado")
-       }
-      return "genero modificada";
-    } catch (error) {
-      throw new Error ("Error al actualizar las generos")
-    }
-  }
+
   async deleteGeneros(id) {
     try {
       const [rows] = await connection.query("DELETE from generos where id_genero=?", [id])

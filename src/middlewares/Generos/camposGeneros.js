@@ -1,7 +1,7 @@
 import { ResponseProvider } from "../../providers/ResponseProvider.js";
-import { campos } from "./validacionesCiudad.js";
+import { campos } from "./validacionesGenero.js";
 
-export function camposCiudad(req, res, next) {
+export function camposGeneros(req, res, next) {
   const errors = [];
 
   for (const campo of campos) {
