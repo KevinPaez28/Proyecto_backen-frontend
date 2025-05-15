@@ -9,38 +9,46 @@ class Lenguajes{
     throw new Error ("Error al consultar las categorias")
     }
   }
-  async postAll(nombre_lenguaje) {
+  async getbyid(id) {
     try {
-      const [rows] = await connection.query("INSERT INTO lenguajes (nombre_lenguaje) values (?)", [nombre_lenguaje])
+      const [rows] = await connection.query("SELECT * FROM lenguajes WHERE id_lenguaje = ?", [id]);
+      if (rows.length === 0) {
+        return []
+      }
+      return rows[0];
+    } catch (error) {
+      throw new Error("Error al obtener los Lenguajes");
+    } 
+  }
+  async postAll(lenguaje) {
+    try {
+      const [rows] = await connection.query("INSERT INTO lenguajes (nombre_lenguaje) values (?)", [lenguaje])
     return {
       id: rows.id,
-      nombre_lenguaje: nombre_lenguaje
+      lenguaje: lenguaje
     }
    } catch (error) {
     throw new Error ("Error al insertar las Lenguajes")
    }
   }
-  async patchLenguajes(id, nombre_lenguaje) {
+ 
+  async putlenguajes(id, campos) {
     try {
-      for (const key in nombre_lenguaje) {
-      
-        const[rows] = await connection.query(`UPDATE lenguajes SET ${key} = ? where id_lenguaje = ?`,[nombre_lenguaje[key], id])
+      let query = "UPDATE lenguajes SET ";
+      let params = [];
+ 
+      for (const [key, value] of Object.entries(campos)) {
+        query += `${key} = ?, `;
+        params.push(value)
       }
-      const [mostrar] = await connection.query("SELECT * FROM lenguajes Where id_lenguaje = ?",[id]);
-      return "Lenguajes modificados";
+      query = query.slice(0, -2);
+ 
+      query += " WHERE id_lenguaje = ?";
+      params.push(id);
+      const [result] = await connection.query(query, params);
+      return result.affectedRows > 0 ? { id, ...campos } : null;
     } catch (error) {
-      throw new Error ("Error al actualizar las Lenguajes")
-    }
-  }
-  async putlenguajes(id, nombre_lenguaje) {
-      try {
-        const [rows] = await connection.query(`UPDATE lenguajes SET nombre_lenguaje = ? where id_lenguaje = ?`, [nombre_lenguaje, id])
-      if (rows.affectedRows === 0) {
-       throw new Error("Lenguaje no encontrada")
-      }
-      return "Lenguaje modificado";
-    } catch (error) {
-      throw new Error ("Error al actualizar las Lenguajes")
+       throw new Error("Error al actualizar el lenguaje");
     }
   }
   async deletelenguajes(id) {
