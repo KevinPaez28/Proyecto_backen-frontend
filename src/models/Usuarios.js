@@ -53,8 +53,8 @@ class Usuarios {
  
       query += " WHERE id_usuario = ?";
       params.push(id);
-      const [result] = await connection.query(query, params);
-      return result.affectedRows > 0 ? { id, ...campos } : null;
+      const [rows] = await connection.query(query, params);
+      return rows.affectedRows > 0 ? { id, ...campos } : null;
     } catch (error) {
        throw new Error("Error al actualizar la ciudad");
     } 
