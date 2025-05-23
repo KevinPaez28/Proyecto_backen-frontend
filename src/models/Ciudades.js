@@ -54,8 +54,8 @@ class Ciudades{
 
      query += " WHERE id_ciudad = ?";
      params.push(id);
-     const [result] = await connection.query(query, params);
-     return result.affectedRows > 0 ? { id, ...campos } : null;
+     const [rows] = await connection.query(query, params);
+     return rows.affectedRows > 0 ? { id, ...campos } : null;
    } catch (error) {
       throw new Error("Error al actualizar la ciudad");
    }
