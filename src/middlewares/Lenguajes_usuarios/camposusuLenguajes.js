@@ -14,7 +14,7 @@ export function camposLenguajes(req, res, next) {
 
     const value = req.body[name];
 
-    if (required && (!value || value.trim()=== "")) {
+    if (required && !value) {
       errors.push({
         campo: name,
         message: `El campo ${name} es obligatorio y no puede estar vacio.`,
