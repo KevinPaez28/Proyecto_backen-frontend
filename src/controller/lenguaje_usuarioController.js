@@ -47,6 +47,8 @@ class Usuarioslenguaje {
   }
   static postlenUsuarios = async (req, res) => {
     const { id_usuario, id_lenguaje } = req.body;
+    console.log(req.body);
+    
     try {
     const response = await LenUsuariosServices. postlenguajesUsu(id_usuario , id_lenguaje);
       if (response.error) {

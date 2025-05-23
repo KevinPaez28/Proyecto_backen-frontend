@@ -23,12 +23,34 @@ class UsuariosController{
       ResponseProvider.error(res, "Error interno del servidor", 500)
     }
   }
-
+  static getbyid = async (req, res) =>{
+    const {id} = req.params;
+    try {
+      const response = await UsuariosServices.getbyidUsuaruos(id);      
+      if (response.error) {
+        return ResponseProvider.error(
+          res,
+          response.message,
+          response.code
+        );
+      } else {
+        return ResponseProvider.success(
+          res,
+          response.data,
+          response.message,
+          response.code
+        );
+      }
+    } catch (error) {
+      ResponseProvider.error(res, "Error interno del servidor", 500)
+    }
+  }
   
   static postusuarios = async (req, res) => {
-    const { documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad } = req.body
+    
+    const { documento, nombre_usuario, apellido_usuario, telefono, contrasenia, id_genero, id_ciudad } = req.body
     try {
-    const usuarios = await UsuariosServices.postUsuarios(documento,nombre_usuario,apellido_usuario,telefono,contrasenia,genero,ciudad);
+    const usuarios = await UsuariosServices.postUsuarios(documento,nombre_usuario,apellido_usuario,telefono,contrasenia,id_genero,id_ciudad);
     if (usuarios.error) {
       return ResponseProvider.error(
         res,

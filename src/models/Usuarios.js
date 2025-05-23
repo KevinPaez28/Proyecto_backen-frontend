@@ -14,19 +14,26 @@ class Usuarios {
   async postUsuarios(documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad) {
     
    try {
-     const [rows] = await connection.query("INSERT INTO usuarios (documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad) VALUES (?, ?, ?, ?, ?, ?, ?)",[documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad]);
+    
+    
+    
+     const [rows] = await connection.query("INSERT INTO usuarios (documento, nombre_usuario, apellido_usuario, telefono, contrasenia, id_genero, id_ciudad) VALUES (?, ?, ?, ?, ?, ?, ?)",[documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad]);
+
+     console.log(rows);
+     
      return {
-       id: rows.id,
+       id: rows.insertId,
        nombre_usuario: nombre_usuario,
        apellido_usuario: apellido_usuario,
        telefono: telefono,
        contrasenia: contrasenia,
-       genero: genero,
-       ciudad,ciudad
+       id_genero: genero,
+       id_ciudad:ciudad
      }
    } catch (error) {
+    
     console.error("Error al insertar los Usuarios", error);
-    throw new Error ("Error al insertar los Usuarios " )    
+    // throw new Error ("Error al insertar los Usuarios " )    
    }
   }
   async getbyid(id) {

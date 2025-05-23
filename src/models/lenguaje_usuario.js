@@ -38,6 +38,8 @@ class Lenguajes_usuario{
        id_lenguaje:id_lenguaje
      }
     } catch (error) {
+      console.log(error);
+      
      throw new Error ("Error al insertar los Lenguajes Usuarios")
     }
   }

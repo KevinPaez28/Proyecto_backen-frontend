@@ -2,8 +2,9 @@ import { ResponseProvider } from "../../providers/ResponseProvider.js";
 import { campos } from "./validacionesUsuarios.js";
 
 export function camposUsuarios(req, res, next) {
+  
   const errors = [];
-
+  
   for (const campo of campos) {
     const {
       name,
@@ -11,9 +12,9 @@ export function camposUsuarios(req, res, next) {
       minLength,
       maxLength,
     } = campo;
-
+    
     const value = req.body[name];
-
+    
     if (required && (!value || value.trim()=== "")) {
       errors.push({
         campo: name,
@@ -47,6 +48,6 @@ export function camposUsuarios(req, res, next) {
       errors
     );
    }  
-
+   
     next();
 }

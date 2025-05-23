@@ -5,6 +5,7 @@ import { camposUsuarios,parcialesLenguajes } from "../middlewares/Usuarios/index
 const exportar = express.Router();
 
 exportar.get('/', UsuariosController.getUsuarios)
+exportar.get('/:id', UsuariosController.getUsuarios)
 exportar.post('/',camposUsuarios, UsuariosController.postusuarios)
 exportar.patch('/:id',parcialesLenguajes, UsuariosController.patchusuarios)
 exportar.put('/:id', camposUsuarios,UsuariosController.patchusuarios)

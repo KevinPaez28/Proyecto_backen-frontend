@@ -27,6 +27,31 @@ class  UsuariosServices{
       }
     }
   }
+  static async getbyidUsuaruos(id) {
+    try {
+      const instanciarUsuarios = new Usuarios();
+      const usuarios = await instanciarUsuarios.getbyid(id);
+      if (usuarios.length === 0) {
+        return {
+          error: true,
+          code: 404,
+          message: "Usuarios no encontrados"
+        };
+      }
+      return {
+        error: false,
+        code: 200,
+        message: "Usuarios Obtenidos correctamente",
+        data: usuarios
+      };
+    } catch (error) {
+      return {
+        error: true,
+        code: 500,
+        message: "Error al obtener los Usuarios"
+      }
+    }
+  }
   static async postUsuarios(documento, nombre_usuario, apellido_usuario, telefono, contrasenia, genero, ciudad) {
     try {
       const instanciarUsuarios = new Usuarios();

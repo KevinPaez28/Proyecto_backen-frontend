@@ -62,7 +62,6 @@ class LenUsuariosServices{
         data: LenguajesUsu,
       };
     } catch (error) {
-      console.log
       return {
         error: true,
         code: 500,
